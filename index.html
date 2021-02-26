@@ -25,9 +25,9 @@
     <h1 class="text-2xl font-bold mt-5">Photo Gallery (<span>{{calculated}}</span>)</h1>
 
     <div class="flex flex-col justify-between items-center space-x-2 mt-5">
-      <photo-search @search-picture="searchPicture" :showbar="showBar" :showsearch="showSearch" @toggle-bar="toggleBar"></photo-search>
+      <photo-search @toggle-search="toggleSearch" @search-picture="searchPicture" :showbar="showBar" :showsearch="showSearch" @toggle-bar="toggleBar"></photo-search>
       <photo-view :showitem="showItems" @hide-canvas="hideCanvas" @previous="previous" @next="next"></photo-view>
-      <photo-item :gallerys="gallerys" :heart="heart" @toggle-heart="toggleHeart"></photo-item>
+      <photo-item @clicked-item="clickedItem":gallerys="gallerys" :heart="heart" @toggle-heart="toggleHeart" @toggle-canvas="toggleCanvas"></photo-item>
       <span class="mt-10 font-bold text-2xl">{{ checkItems }}</span>
     </div>
 

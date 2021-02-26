@@ -8,7 +8,7 @@ app.component('photo-search', {
           class="p-2 bg-white rounded flex-1 w-96" @keyup.enter="searchPicture">
         <button @click="toggleBar" class="bg-blue-500 text-white  py-2 px-3 rounded ml-2">Cancel</button>
     </div>
-    <button @click="toggleBar" v-show="showsearch"><span class="material-icons">
+    <button @click="toggleSearch" v-show="showsearch"><span class="material-icons">
         search
     </span></button>`
     ,
@@ -18,6 +18,9 @@ app.component('photo-search', {
         },
         toggleBar(){
             this.$emit('toggle-bar');
+        },
+        toggleSearch(){
+            this.$emit('toggle-search');
         }
     },
     data(){

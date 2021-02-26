@@ -4,10 +4,11 @@ app.component('photo-view', {
             type: Object,
             require: true
         }
+
     },
     template:
         /*html*/
-        `<span v-show="showitem.done" class="px-8 pb-7 pt-2 bg-black text-right">
+        `<span v-show="showitem.canvas" class="px-8 pb-7 pt-2 bg-black text-right">
         <button class="text-white text-2xl" @click="hideCanvas">X</button>
         <img :src="showitem.image" width="400" height="400">
         <div class="flex justify-between">

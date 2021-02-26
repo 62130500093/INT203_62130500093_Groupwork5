@@ -13,7 +13,7 @@ app.component('photo-item', {
     /*html*/
     `<ul>
       <li v-for="(item,index) in gallerys" class="flex items-center mt-5" v-show="item.show">
-        <button v-on:click="toggleHeart(index)">
+        <button v-on:click="clickedItem(index,item)">
           <img :src="item.image" width="200" height="200">
         </button>
         <span class="ml-4 text-xl font-medium w-80">{{item.title}}</span>
@@ -31,6 +31,12 @@ app.component('photo-item', {
     toggleHeart(index) {
       this.$emit('toggle-heart', index);
     },
+    toggleCanvas(item){
+      this.$emit('toggle-canvas',item);
+    },
+    clickedItem(index,item){
+      this.$emit('clicked-item',index,item);
+    }
 
   }
 });

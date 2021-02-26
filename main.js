@@ -1,53 +1,85 @@
 const app = Vue.createApp({
     data() {
         return {
-            gallerys: [{ image: "./images/view1.jpg", title: "Dark Sea, Kuala Lumpur", done: false, show: true }
-                , { image: "./images/view2.jpg", title: "Greenwood Mountain, Russia", done: false, show: true }
-                , { image: "./images/view3.jpg", title: "Brown pine wood, Monte Carlo", done: false, show: true }],
+            gallerys: [{ image: "./images/view1.jpg", title: "Dark Sea, Kuala Lumpur", done: false, show: true, canvas: false }
+                , { image: "./images/view2.jpg", title: "Greenwood Mountain, Russia", done: false, show: true, canvas: false }
+                , { image: "./images/view3.jpg", title: "Brown pine wood, Monte Carlo", done: false, show: true, canvas: false }],
             heart: "./images/heart.png",
             showBar: false,
             showSearch: true,
             showCanvas: false,
             showItems: {},
             index: 0,
+            click: undefined,
         }
     },
     methods: {
-        next() {
-            this.toggleHeart(this.index + 1);
+        clickedItem(index, item) {
+            return new Promise((resolve, reject) => {
+                if (this.click) {
+                    clearTimeout(this.click);
+                    resolve(this.toggleCanvas(index, item));
+                }
+                this.click = setTimeout(() => {
+                    this.click = undefined;
+                    resolve(this.toggleHeart(index, item));
+                }, 200);
+
+            })
         },
+        next() {
+            if (this.index + 1 > this.gallerys.length - 1) {
+                this.index = -1;
+            }
+            if (this.gallerys[this.index + 1].show == false) { }
+            else {
+                this.toggleCanvas(this.index + 1, this.gallerys[this.index + 1]);
+            }
+        }
+        ,
         previous() {
-            this.toggleHeart(this.index - 1);
+            if (this.index - 1 < 0) {
+                this.index = this.gallerys.length;
+            }
+            if (this.gallerys[this.index - 1].show == false) { }
+            else {
+                this.toggleCanvas(this.index - 1, this.gallerys[this.index - 1]);
+            }
         },
         toggleHeart(index) {
-            if (this.gallerys[index].show == false) {}
+            if (this.gallerys[index].show == false) { }
             else {
                 this.gallerys[index].done = !this.gallerys[index].done;
-                this.index = index;
-                for (let i = 0; i < this.gallerys.length; i++) {
-                    if (index == i) continue;
-                    this.gallerys[i].done = false;
-                }
-                if (this.gallerys[index].done == true) {
-                    this.toggleCanvas(this.gallerys[index]);
-                }
-                if (this.gallerys[index].done == false) {
-                    this.showCanvas = false;
-                    this.showSearch = true;
-                }
             }
         },
         hideCanvas() {
             this.showSearch = true;
+            this.showCanvas = false;
+            this.index = undefined;
             this.showItems = {};
-            this.toggleHeart(this.index);
+            for(let i = 0 ; i < this.gallerys.length ; i++){
+                this.gallerys[i].canvas = false;
+            }
         }
         ,
-        toggleCanvas(input) {
-            this.showCanvas = true;
-            this.showBar = false;
-            this.showSearch = false;
-            this.showItems = input;
+        toggleCanvas(index, input) {
+            this.index = index;
+            if (this.gallerys[index].canvas == false) {
+                for (let i = 0; i < this.gallerys.length; i++) {
+                    if (index == i) continue;
+                    this.gallerys[i].canvas = false;
+                }
+                this.gallerys[index].canvas = true;
+                this.showCanvas = true;
+                this.showBar = false;
+                this.showSearch = false;
+                this.showItems = input;
+            }
+
+        },
+        toggleSearch() {
+            this.showBar = !this.showBar;
+            this.showSearch = !this.showSearch;
         },
         toggleBar() {
             this.showBar = !this.showBar;
